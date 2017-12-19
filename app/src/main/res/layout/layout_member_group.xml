@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_group_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        tools:text="1123"
+        android:textColor="#32a0f0"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/tv_group_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_group_key"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:text="@string/face_group_member"
+        android:textColor="#767676"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/v_group_gap"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tv_group_member"
+        android:layout_marginBottom="16dp"
+        android:background="#dcdcdc" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rl_group_member"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_group_enter"
+        android:layout_below="@+id/v_group_gap" />
+
+
+    <TextView
+        android:id="@+id/tv_group_enter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/key_group_enter_background"
+        android:gravity="center"
+        android:text="@string/face_group_enter"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>
