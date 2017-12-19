@@ -4,11 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.isoftstone.facekeynum.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.isoftstone.facekeynum.widget.KeyShowLayout.MAX_KEY_NUM;
 
 /**
  * Created by jiazhen on 17/12/15.
@@ -29,7 +32,7 @@ public class FaceGroupKeyLayout extends RelativeLayout {
     }
 
     public FaceGroupKeyLayout(Context context, AttributeSet attrs) {
-        this(context, null, 0);
+        this(context, attrs, 0);
     }
 
     public FaceGroupKeyLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -60,6 +63,10 @@ public class FaceGroupKeyLayout extends RelativeLayout {
                         mKeyTexts.remove(mKeyTexts.size() - 1);
                     }
                 } else {
+                    if (mKeyTexts.size()==MAX_KEY_NUM){
+                        Toast.makeText(getContext(),"只能输入4位数字",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     mKeyTexts.add(keyNum);
                 }
                 mKeyShowLayout.setKeyText(mKeyTexts);

@@ -22,6 +22,8 @@ import java.util.List;
 
 public class KeyShowLayout extends LinearLayout {
 
+    public static final int MAX_KEY_NUM = 4;
+
     private EditText etKey1, etKey2, etKey3, etKey4;
 
     public KeyShowLayout(Context context) {
@@ -58,6 +60,10 @@ public class KeyShowLayout extends LinearLayout {
         disableShowSoftInput(etKey4);
     }
 
+    /**
+     * 设置
+     * @param keyText
+     */
     public void setKeyText(List<String> keyText) {
         if (keyText == null) return;
         resetKeyShow();
@@ -67,16 +73,19 @@ public class KeyShowLayout extends LinearLayout {
         }
         if (keyText.size() >= 1) {
             etKey1.setText(keyText.get(0));
+            etKey1.setEnabled(false);
             etKey2.setEnabled(true);
             etKey2.requestFocus();
         }
         if (keyText.size() >= 2) {
             etKey2.setText(keyText.get(1));
+            etKey2.setEnabled(false);
             etKey3.setEnabled(true);
             etKey3.requestFocus();
         }
         if (keyText.size() >= 3) {
             etKey3.setText(keyText.get(2));
+            etKey3.setEnabled(false);
             etKey4.setEnabled(true);
             etKey4.requestFocus();
         }
@@ -99,7 +108,7 @@ public class KeyShowLayout extends LinearLayout {
     }
 
     public boolean isFull(int size) {
-        return 4 == size;
+        return MAX_KEY_NUM == size;
     }
 
     /**
