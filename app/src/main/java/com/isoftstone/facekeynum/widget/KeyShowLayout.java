@@ -2,17 +2,21 @@ package com.isoftstone.facekeynum.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
+import android.text.method.KeyListener;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.isoftstone.facekeynum.R;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +29,10 @@ public class KeyShowLayout extends LinearLayout {
     public static final int MAX_KEY_NUM = 4;
 
     private EditText etKey1, etKey2, etKey3, etKey4;
+
+    private TextWatcher mTextWatcher;
+
+    private KeyListener mKeyListener;
 
     public KeyShowLayout(Context context) {
         this(context, null);
@@ -46,22 +54,104 @@ public class KeyShowLayout extends LinearLayout {
         etKey3 = findViewById(R.id.key_3);
         etKey4 = findViewById(R.id.key_4);
 
-        resetKeyShow();
-        etKey1.setEnabled(true);
+        ArrayList<View> views = new ArrayList<>();
+        views.add(etKey1);
+        views.add(etKey2);
+        views.add(etKey3);
+        views.add(etKey4);
+        addFocusables(views, FOCUS_RIGHT);
 
-        modifyCursorDrawable(etKey1, R.drawable.edit_cursor_color);
-        modifyCursorDrawable(etKey2, R.drawable.edit_cursor_color);
-        modifyCursorDrawable(etKey3, R.drawable.edit_cursor_color);
-        modifyCursorDrawable(etKey4, R.drawable.edit_cursor_color);
+        mTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-        disableShowSoftInput(etKey1);
-        disableShowSoftInput(etKey2);
-        disableShowSoftInput(etKey3);
-        disableShowSoftInput(etKey4);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()==0)return;
+                int nextFocusRightId = getFocusedChild().findFocus().getNextFocusRightId();
+                View nextFocusView = findViewById(nextFocusRightId);
+                if (nextFocusView != null) {
+                    nextFocusView.requestFocus();
+                }
+            }
+        };
+
+        etKey1.addTextChangedListener(mTextWatcher);
+        etKey2.addTextChangedListener(mTextWatcher);
+        etKey3.addTextChangedListener(mTextWatcher);
+        etKey4.addTextChangedListener(mTextWatcher);
+
+       mKeyListener = new KeyListener() {
+           @Override
+           public int getInputType() {
+               return InputType.TYPE_CLASS_NUMBER;
+           }
+
+           @Override
+           public boolean onKeyDown(View view, Editable text, int keyCode, KeyEvent event) {
+               if (event.getAction() == KeyEvent.KEYCODE_DEL) {
+                   if (text.length() == 0) {
+                       int nextFocusForwardId = view.getNextFocusForwardId();
+                       View nextFocusForwardView = findViewById(nextFocusForwardId);
+                       if (nextFocusForwardView != null) {
+                           ((EditText) nextFocusForwardView).setText("");
+                           nextFocusForwardView.requestFocus();
+                           return true;
+                       }
+                   }
+               }
+               return false;
+           }
+
+           @Override
+           public boolean onKeyUp(View view, Editable text, int keyCode, KeyEvent event) {
+               return false;
+           }
+
+           @Override
+           public boolean onKeyOther(View view, Editable text, KeyEvent event) {
+               return false;
+           }
+
+           @Override
+           public void clearMetaKeyState(View view, Editable content, int states) {
+
+           }
+       };
+
+        etKey1.setKeyListener(DigitsKeyListener.getInstance());
+        etKey2.setKeyListener(DigitsKeyListener.getInstance());
+        etKey3.setKeyListener(DigitsKeyListener.getInstance());
+        etKey4.setKeyListener(DigitsKeyListener.getInstance());
+
+        etKey1.setFocusable(true);
+        etKey2.setFocusable(true);
+        etKey3.setFocusable(true);
+        etKey4.setFocusable(true);
+
+        etKey1.setNextFocusRightId(R.id.key_2);
+        etKey2.setNextFocusRightId(R.id.key_3);
+        etKey3.setNextFocusRightId(R.id.key_4);
+
+        etKey4.setNextFocusForwardId(R.id.key_3);
+        etKey3.setNextFocusForwardId(R.id.key_2);
+        etKey2.setNextFocusForwardId(R.id.key_1);
+
+
+
+
+
     }
+
 
     /**
      * 设置
+     *
      * @param keyText
      */
     public void setKeyText(List<String> keyText) {
@@ -111,47 +201,5 @@ public class KeyShowLayout extends LinearLayout {
         return MAX_KEY_NUM == size;
     }
 
-    /**
-     * 修改光标颜色
-     *
-     * @param obj
-     * @param drawable
-     */
-    private void modifyCursorDrawable(EditText obj, int drawable) {
-        try {
-            Field setCursor = TextView.class.getDeclaredField("mCursorDrawableRes");
-            setCursor.setAccessible(true);
-            setCursor.set(obj, drawable);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 禁止Edittext弹出软件盘，光标依然正常显示。
-     */
-    public void disableShowSoftInput(EditText obj) {
-        if (android.os.Build.VERSION.SDK_INT <= 10) {
-            obj.setInputType(InputType.TYPE_NULL);
-        } else {
-            Class<EditText> cls = EditText.class;
-            Method method;
-            try {
-                method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
-                method.setAccessible(true);
-                method.invoke(obj, false);
-            } catch (Exception e) {
-            }
-
-            try {
-                method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
-                method.setAccessible(true);
-                method.invoke(obj, false);
-            } catch (Exception e) {
-            }
-        }
-    }
 
 }
