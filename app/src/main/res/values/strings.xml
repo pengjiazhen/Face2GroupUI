@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FaceKeyNum</string>
+    <string name="face_group_tip">和身边的同时输入同样的四个数字，\n 进入同一个群聊</string>
+</resources>

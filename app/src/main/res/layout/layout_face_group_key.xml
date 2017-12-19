@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/key_group_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="72dp"
+        android:gravity="center"
+        android:text="@string/face_group_tip"
+        android:textColor="#767676"
+        android:textSize="14sp" />
+
+    <com.isoftstone.facekeynum.widget.KeyShowLayout
+        android:id="@+id/key_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/key_group_tip"
+        android:layout_centerHorizontal="true" />
+
+    <com.isoftstone.facekeynum.widget.InputKeyBoardsLayout
+        android:id="@+id/key_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
