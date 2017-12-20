@@ -1,14 +1,18 @@
 package com.isoftstone.facekeynum.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.isoftstone.facekeynum.R;
 
@@ -41,7 +45,27 @@ public class InputKeyBoardsLayout extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.layout_key_board, this, true);
 
         mGridView = findViewById(R.id.grid_view);
-        mAdapter = new ArrayAdapter<>(context, R.layout.item_key_board);
+        mAdapter = new ArrayAdapter<String>(context, R.layout.item_key_board){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                //return super.getView(position, convertView, parent);
+                if (convertView==null){
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_key_board,parent,false);
+                }
+                String itemText = getItem(position);
+                TextView itemTextView = convertView.findViewById(R.id.item_key_text);
+                ImageView itemIconView = convertView.findViewById(R.id.item_key_icon);
+                itemIconView.setVisibility(GONE);itemTextView.setVisibility(GONE);
+                itemTextView.setText(itemText);
+                if ("x".equals(itemText)){
+                    itemIconView.setVisibility(VISIBLE);
+                }else {
+                    itemTextView.setVisibility(VISIBLE);
+                }
+                return convertView;
+            }
+        };
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

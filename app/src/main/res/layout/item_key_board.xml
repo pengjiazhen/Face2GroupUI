@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_key"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
     android:background="#fff"
-    android:gravity="center"
-    android:textColor="@color/itemKeyFontColor"
-    android:textSize="24sp" />
+    android:layout_height="48dp">
+    <TextView
+        android:id="@+id/item_key_text"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#fff"
+        android:gravity="center"
+        android:textColor="@color/itemKeyFontColor"
+        android:textSize="24sp"/>
+    <ImageView
+        android:id="@+id/item_key_icon"
+        android:visibility="gone"
+        android:src="@mipmap/key_del"
+        android:layout_centerInParent="true"
+        android:layout_width="20dp"
+        android:layout_height="16dp" />
+</RelativeLayout>
 
